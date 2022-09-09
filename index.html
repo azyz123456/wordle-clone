@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordle</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Wordle</h1>
+    <div id="winpopup">
+        <div id="close">X</div>
+        <h3>STATISTICS</h3>
+            <div id="statistics">
+                <div id="played" class="stat">
+                    <h2 id="numplayed">0</h2>
+                    <p>Played</p>
+                </div>
+                <div id="winpercent" class="stat">
+                    <h2 id="numwinpercent">0</h2>
+                    <p>Win %</p>
+                </div>
+                <div id="currentstreak" class="stat">
+                    <h2 id="numcurrentstreak">0</h2>
+                    <p>Current <br> Streak </p>
+                </div>
+                <div id="maxstreak" class="stat">
+                    <h2 id="nummaxstreak">0</h2>
+                    <p>Max <br> Streak</p>
+                </div>
+
+            </div>
+        <h3>GUESS DISTRIBUTION</h3>
+
+    </div>
+    <div id="guesses"></div>
+    <div id='keyboard'></div>   
+    <div class="keyboardrow1" id="firstrow"></div>
+    <div class="keyboardrow2" id="secondrow"></div>
+    <div class="keyboardrow3" id="thirdrow"></div>
+    <h3 id="debug"></h3>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

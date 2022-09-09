@@ -1,0 +1,132 @@
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+
+#winpopup {
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 65vw;
+    height: 100vh;
+    background-color: white;
+    box-shadow: 0px 0px 10px 5px lightgray;
+    border-radius: 15px;
+    visibility: hidden;
+}
+
+#close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: gray;
+    cursor: pointer;
+}
+
+#statistics {
+    width: 65vw;
+    height: 15vh;
+    margin: 0 auto;
+    margin-top: 3px;
+    display: flex;
+    justify-content: center;
+}
+
+p {
+    font-size: 12px;
+    margin: 15px;
+}
+
+h2 {
+    margin-bottom: 5px;
+}
+
+#guesses {
+    width: 350px;
+    height: 420px;
+    margin: 0 auto;
+    margin-top: 3px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box {
+    /* Box */
+    border: 2px solid lightgray;
+    width: 60px;
+    height: 60px;
+    margin: 2.5px;
+
+    /* Text */
+    color: black;
+    font-size: 36px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.keyboardrow1 {
+    width: 420px;
+    height: 50px;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.keyboardrow2 {
+    width: 380px;
+    height: 50px;
+    margin: 0 auto;
+    margin-top: 5px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.keyboardrow3 {
+    width: 460px;
+    height: 50px;
+    margin: 0 auto;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.keytile {
+    width: 36px;
+    height: 50px;
+    margin: 0 auto;
+    border-radius: 4px;
+    background-color: lightgray;
+
+    /* Text */
+    font-size: 15px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bigkeytile {
+    width: 76px;
+    height: 50px;
+    margin: 1px auto;
+    background-color: lightgray;
+    border-radius: 4px;
+
+    /* Text */
+    font-size: 15px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
