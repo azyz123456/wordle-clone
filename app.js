@@ -1,37 +1,3 @@
-/*
-    wordle rules for duplicates:
-
-If you try a word that shares duplicate letters with the answer, every instance of that letter
-will change color. For example, if you guess ”lever” and the answer is “eaten,”
-the first E in “lever” will turn yellow and the second one will turn green.
-The first one is in the word but in the wrong spot, and the second one is in the correct spot.
-The other letters will turn gray.
-
-Keep in mind that Wordle tells you when a letter is not duplicated, too.
-If you use two of the same letter in a word, and only one of them turns yellow or green,
-then there is only one copy of that letter in the correct Wordle answer.
-
-let str = ["about
-above
-abuse
-actor
-acute
-admit"];
-*/
-
-/*
-    to-do: 
-    - make array for valid guesses
-    - make array for valid answers
-*/
-
-//user statistics
-let played = 0;
-let currentStreak = 0;
-let maxStreak = 0;
-let guessDistribution = [0,0,0,0,0,0];
-let won = 0;
-let winPercent = 0;
 
 //main game variables
 let guesses = document.getElementById("guesses");
@@ -39,7 +5,6 @@ let str = document.querySelector("#debug");
 let numGuesses=0;
 let currBoxNum = 0;
 let gameOver = false;
-
 let answer;
 let words;
 let guess = "";
@@ -135,7 +100,7 @@ async function setAnswer() {
     }
 
 
-    //console.log("words:", words);
+    //troubleshooting: console.log("words:", words);
 
 
     //choose an answer for the game
@@ -155,10 +120,9 @@ async function setAnswer() {
 }
 
 function checkGuess() {
+    
     //check guess against answer
-
     occurrencesInGuess = [];
-
     for (let letter of guess) {
         if (occurrencesInGuess[letter]) {
             occurrencesInGuess[letter]++;
@@ -167,12 +131,7 @@ function checkGuess() {
         }
     }
 
-
     for (let i=0; i<answer.length; i++) {
-        //str.innerHTML = "Occurrences in guess: " + occurrencesInGuess[guess[i]];
-        //str.innerHTML += " Occurrences in answer: " + occurrencesInAnswer[guess[i]];
-
-
         let id = i+numGuesses*5;
         let tile = document.getElementById(id);
         let keytile = document.getElementById("key" + tile.innerHTML);
@@ -196,22 +155,19 @@ function checkGuess() {
             if (keytile.style.backgroundColor != "rgb(106, 170, 100)") {
                 keytile.style.backgroundColor = "#C9B458";
                 keytile.style.color = "white";
-            } 
-            
+            }  
 
             if (occurrencesInGuess[guess[i]] > occurrencesInAnswer[guess[i]]) {
                 //tile turns grey
                 tile.style.backgroundColor = "#787C7E";
                 tile.style.borderColor = "#787C7E";
                 tile.style.color = "white";
-
                 occurrencesInGuess[guess[i]]--;
             } else {
                 //tile turns yellow
                 tile.style.backgroundColor = "#C9B458";
                 tile.style.borderColor = "#C9B458";
                 tile.style.color = "white";
-
             }
 
             /*when the guess has more letter[i]s than the answer: turn ones that are not in the correct place grey until number of letters[i] in answer and guess is the same
@@ -287,42 +243,10 @@ async function validGuess() {
 function checkWin() {
     //check if the winner has won or lost
     if (guess === answer) {
-        //JS
-        played++;
-        won++;
-        winPercent = won/played*100;
-        currentStreak++;
-        maxStreak = Math.max(currentStreak, maxStreak);
-        guessDistribution[numGuesses-1]++;
-
-        //HTML
-        let popup = document.querySelector("#winpopup");
-        let close = document.querySelector("#close");
-        close.addEventListener("click", ()=> {
-            popup.style.visibility = "hidden";
-        });
-
-        popup.style.visibility = "visible";
-
-        document.querySelector("#numplayed").innerText = played;
-
-        let winDisplay = document.createElement("h2");
-        winDisplay.innerText = winPercent;
-
-        let currentStreakDisplay = document.createElement("h2");
-        currentStreakDisplay.innerText = currentStreak;
-
-        let maxStreakDisplay = document.createElement("h2");
-        maxStreakDisplay.innerText = maxStreak;
-
-
+        str.innerHTML = "You won!";
         return true;
     } else if (numGuesses===6) {
         str.innerHTML = "You lost!";
-        gameOver = true;
-        played++;
-        currentStreak = 0;
-        winPercent = won/played*100;
     }
     return false;
 }
@@ -398,3 +322,4 @@ function backspace() {
 
     guess = guess.substring(0, guess.length-1);
 }
+
