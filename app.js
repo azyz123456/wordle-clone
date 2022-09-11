@@ -1,10 +1,10 @@
-
 //main game variables
 let guesses = document.getElementById("guesses");
 let str = document.querySelector("#debug");
 let numGuesses=0;
 let currBoxNum = 0;
 let gameOver = false;
+
 let answer;
 let words;
 let guess = "";
@@ -15,7 +15,6 @@ let occurencesInGuess;
 let firstRow = document.querySelector("#firstrow");
 let secondRow = document.querySelector("#secondrow");
 let thirdRow = document.querySelector("#thirdrow");
-
 
 window.onload = function() {
     setAnswer();
@@ -85,11 +84,6 @@ window.onload = function() {
 
 async function setAnswer() {
 
-    // fetch("http://127.0.0.1:5500/Wordle/words.txt").then((response) => response.text())
-    // .then((text) => {
-    //     console.log("Text:", text);
-    // });
-
     let ret = await fetch("http://127.0.0.1:5500/Wordle/answerWords.txt");
     words = await ret.text();
     words = words.split("\n");
@@ -99,9 +93,7 @@ async function setAnswer() {
         words[i] = words[i].toUpperCase();
     }
 
-
-    //troubleshooting: console.log("words:", words);
-
+    //console.log("words:", words);
 
     //choose an answer for the game
     let index = Math.floor(Math.random()*words.length);
@@ -120,9 +112,10 @@ async function setAnswer() {
 }
 
 function checkGuess() {
-    
     //check guess against answer
+
     occurrencesInGuess = [];
+
     for (let letter of guess) {
         if (occurrencesInGuess[letter]) {
             occurrencesInGuess[letter]++;
@@ -131,7 +124,10 @@ function checkGuess() {
         }
     }
 
+
     for (let i=0; i<answer.length; i++) {
+        //troubleshooting: str.innerHTML = "Occurrences in guess: " + occurrencesInGuess[guess[i]];
+        //str.innerHTML += " Occurrences in answer: " + occurrencesInAnswer[guess[i]];
         let id = i+numGuesses*5;
         let tile = document.getElementById(id);
         let keytile = document.getElementById("key" + tile.innerHTML);
@@ -148,14 +144,13 @@ function checkGuess() {
 
         }
         else if (answer.includes(guess[i])) {
-            //bug: key should turn yellow if it is not already green
-            //why does it now work with #_____ but works with rgb?
-            //console.log("background color of key tile: ", keytile.style.backgroundColor);
+            //troubleshooting: console.log("background color of key tile: ", keytile.style.backgroundColor);
+            //when the guess has more of a specific letter than the answer, turn tiles that are not in the correct place grey until the number of remaining letters in guess and the answer is the same
 
             if (keytile.style.backgroundColor != "rgb(106, 170, 100)") {
                 keytile.style.backgroundColor = "#C9B458";
                 keytile.style.color = "white";
-            }  
+            } 
 
             if (occurrencesInGuess[guess[i]] > occurrencesInAnswer[guess[i]]) {
                 //tile turns grey
@@ -163,6 +158,7 @@ function checkGuess() {
                 tile.style.borderColor = "#787C7E";
                 tile.style.color = "white";
                 occurrencesInGuess[guess[i]]--;
+
             } else {
                 //tile turns yellow
                 tile.style.backgroundColor = "#C9B458";
@@ -170,9 +166,6 @@ function checkGuess() {
                 tile.style.color = "white";
             }
 
-            /*when the guess has more letter[i]s than the answer: turn ones that are not in the correct place grey until number of letters[i] in answer and guess is the same
-            remainder: yellow or green according to normal rules
-            */
         }
         else {
             //tile turns grey
@@ -185,55 +178,47 @@ function checkGuess() {
             keytile.style.color = "white";
         }
     }
-
     //number of guesses increases by 1
     numGuesses++;
 }
 
 async function setGuess() {
-    //called when enter is clicked or enter key is pressed
-
     //check if guess is valid
-    //if guess valid, go to check guess
-    //if not valid, do the shake box, not in word list notification, keep layout the same
+    //if guess is valid, go to check guess, if not, print invalid guess
 
     if (currBoxNum % 5 !== 4) {
-        str.innerHTML = "Not enough letters!"; //why does this not work?
+        str.innerHTML = "Not enough letters!";
         return;
     }
 
-    if (await validGuess() === true) {//if (validGuess()===true) async problem?
-        //if guess is a valid word, evaluate its match with the answer
-        //str.innerHTML = "Valid word: " + guess;
-        //str.innerHTML += " Answer: " + answer;
+    if (await validGuess() === true) {
         checkGuess();
         if (checkWin()===false && gameOver === false) {
-            //start new line
+            //reset guess
             guess = "";
             currBoxNum++;
         }
+
     } else {
         str.innerHTML = "Invalid word";
     }
-
 }
 
 async function validGuess() {
-
-    //check if guess is a word in the English dictionary
+    //array of valid five-letter guesses
     let ret = await fetch("http://127.0.0.1:5500/Wordle/wordleWords.txt");
     validWords = await ret.text();
     validWords = validWords.split("\n");
 
+    //check if guess is a valid five-letter word in the dictionary
     for (let i=0; i<validWords.length; i++) {
         validWords[i] = validWords[i].toUpperCase();
     }
-    //console.log("valid guesses: " , validWords, guess);
+    //troubleshooting: console.log("valid guesses: " , validWords, guess);
 
     if (validWords.includes(guess)) {
         return true;
     }
-
     return false;
     
 }
@@ -251,57 +236,51 @@ function checkWin() {
 
 
 function setLetter() {
-    //set the letter when the keyboard tile is clicked or key is pressed on the physical keyboard
+    //set the letter when the keyboard tile is clicked or the key is pressed on the user's keyboard
 
-    //HTML
     let box = document.getElementById(currBoxNum);
-
     if (box.innerText.length !== 1) {
         box.innerHTML = this.innerHTML;
         box.style.borderColor = "gray";
     }
-
     if (currBoxNum % 5 !== 4) {
         currBoxNum++;
     }
 
     //JS
     guess += this.innerHTML;
-
 }
 
 async function setLetterWithKeyboard(event) {
-    //fix backspace problem
+
+    //set guess when "enter" is clicked
     if (event.key === "Enter") {
         await setGuess();
     }
 
+    //delete the current letter
     else if (event.key === "Backspace") {
         backspace();
     }
 
 
+    //add a letter to guess
     else {
-            //Letters HTML
             let box = document.getElementById(currBoxNum);
-
             if (box.innerText.length !== 1) {
                 box.innerHTML = event.code[3];
                 box.style.borderColor = "gray";
             }
-            
             if (currBoxNum % 5 !== 4) {
                 currBoxNum++;
             }
             
-            //Letters JS
             guess += event.code[3];
     }
-
-
 }
 
 function backspace() {
+    //delete the last letter in the guess
 
     let box = document.getElementById(currBoxNum);
 
@@ -309,7 +288,7 @@ function backspace() {
         return;
     }
 
-    if (box.innerText.length === 1) { //if last tile in row has value
+    if (box.innerText.length === 1) {
         box.innerHTML = ""; 
         box.style.borderColor = "lightgray";
     } else {
