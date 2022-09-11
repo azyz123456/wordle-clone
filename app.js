@@ -219,8 +219,7 @@ async function setGuess() {
 }
 
 async function validGuess() {
-    return true;
-    /*
+
     //check if guess is a word in the English dictionary
     let ret = await fetch("http://127.0.0.1:5500/Wordle/wordleWords.txt");
     validWords = await ret.text();
@@ -236,7 +235,6 @@ async function validGuess() {
     }
 
     return false;
-    */
     
 }
 
